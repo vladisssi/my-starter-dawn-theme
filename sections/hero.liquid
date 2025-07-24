@@ -1,0 +1,147 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="hero" style="background-image: url({{ 'background-hero.jpg' |  asset_url }})" aria-label="Hero section">
+  <div class="hero__content">
+    <h1 class="hero__title">{{ section.settings.title }}</h1>
+    <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+    <a class="hero__button" href="{{ routes.store_url }}">{{ section.settings.button_label }}</a>
+  </div>
+</section>
+
+<style>
+  .hero__title {
+    font-size: {{ section.settings.title_size_mobile }}px;
+    color: {{ section.settings.title_color }};
+  }
+
+  .hero__subtitle {
+    font-size: {{section.settings.subtitle_size_mobile}}px;
+    color: {{ section.settings.subtitle_color }};
+  }
+
+  .hero__button {
+    font-size: {{ section.settings.button_text_size }}px;
+    color: {{ section.settings.button_text_color }};
+    background-color: {{ section.settings.button_background_color }};
+  }
+
+  .hero__content {
+    backdrop-filter: blur({{section.settings.background_blur}}px);
+  }
+</style>
+
+<style>
+  @media (min-width: 800px) {
+    .hero__title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+
+    .hero__subtitle {
+      font-size: {{ section.settings.subtitle_size_desktop }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "MAKE A GREAT FIRST IMPRESSION"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#F1F1F1"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Title Font Size (Desktop)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Font Size (Mobile)",
+      "min": 12,
+      "max": 100,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Add images and text to give focus to your chosen product, collection, or blog post"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#F1F1F1"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "label": "Subtitle Font Size (Desktop)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Font Size (Mobile)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color",
+      "default": "#212322"
+    },
+    {
+      "type": "range",
+      "id": "background_blur",
+      "label": "Background Blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}
