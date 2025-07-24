@@ -2,7 +2,8 @@
 
 <section class="hero" style="background-image: url({{ 'background-hero.jpg' |  asset_url }})" aria-label="Hero section">
   <div class="hero__content">
-    <h1 class="hero__title">{{ section.settings.title }}</h1>
+    {% comment %} i’m using a div instead of an h1 because in the schema i already set the default value of the richtext with an h1 tag so i assume section.settings.title already includes the h1 and i don’t want to nest heading tags did i get that right {% endcomment %}
+    <div class="hero__title">{{ section.settings.title }}</div>
     <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
     <a class="hero__button" href="{{ routes.store_url }}">{{ section.settings.button_label }}</a>
   </div>
@@ -50,7 +51,7 @@
       "type": "richtext",
       "id": "title",
       "label": "Title",
-      "default": "MAKE A GREAT FIRST IMPRESSION"
+      "default": "<h1>MAKE A GREAT FIRST IMPRESSION</h1>"
     },
     {
       "type": "color",
