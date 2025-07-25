@@ -20,22 +20,60 @@
     </nav>
     <h1 class="contact-us__hero-title">{{ section.settings.title }}</h1>
   </div>
+
+  <div class="contact-us__container">
+    <p class="contact-us__description">
+      {{ section.settings.description_text }}
+    </p>
+
+    <div class="contact-us__contact-item">
+      <img src="{{ 'email-icon.svg' |  asset_url }}" alt="Email Img" height="47" width="32">
+
+      <div class="contact-us__contact-text">
+        <h3 class="contact-us__contact-label">For customer support:</h3>
+        <p class="contact-us__contact-info">contact@gopurepod.com</p>
+      </div>
+    </div>
+
+    <div class="contact-us__contact-item">
+      <img src="{{ 'location-icon.svg' | asset_url }}" alt="Location Icon" height="47" width="32">
+
+      <div class="contact-us__contact-text">
+        <h3 class="contact-us__contact-label">Our location:</h3>
+        <p class="contact-us__contact-info">1234 Main Street, Los Angeles, CA 90001</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style>
-  .contact-us__hero-title {
-    color: {{ section.settings.title_color }};
-    font-size: {{ section.settings.title_size-mobile }}px;
+   .contact-us__hero-title {
+     color: {{ section.settings.title_color }};
+     font-size: {{ section.settings.title_size-mobile }}px;
 
-    @media (min-width: 1100px) {
-      font-size: {{ section.settings.title_size-desktop }}px;
-    }
-  }
+     @media (min-width: 1100px) {
+       font-size: {{ section.settings.title_size-desktop }}px;
+     }
+   }
 
-  .contact-us__hero-nav {
-    color: {{ section.settings.nav_color }};
-    font-size: {{ section.settings.nav_size }}px;
-  }
+   .contact-us__hero-nav {
+     color: {{ section.settings.nav_color }};
+     font-size: {{ section.settings.nav_size }}px;
+   }
+
+   .contact-us__description {
+     color: {{ section.settings.description_text_color }};
+     font-size: {{ section.settings.description_text_size }}px;
+   }
+
+  .contact-us__container {
+     background-color: {{ section.settings.background }};
+     padding: {{ section.settings.padding_y_mobile }}px {{ section.settings.padding_x_mobile }}px;
+
+     @media (min-width: 1000px) {
+       padding: {{ section.settings.padding_y_desktop }}px {{ section.settings.padding_x_desktop }}px;
+     }
+   }
 </style>
 
 {% schema %}
@@ -92,6 +130,73 @@
       "max": 100,
       "step": 1,
       "default": 16
+    },
+    {
+      "type": "text",
+      "id": "description_text",
+      "label": "Description Text",
+      "default": "We appreciate your business and want to ensure you are satisfied with your GOpure product! Please contact us with any questions you have about the product, or if we can help you in any way."
+    },
+    {
+      "type": "color",
+      "id": "description_text_color",
+      "label": "Description text color",
+      "default": "#606060"
+    },
+    {
+      "type": "range",
+      "id": "description_text_size",
+      "label": "Description Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_y_mobile",
+      "label": "Vertical padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Horizontal padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_y_desktop",
+      "label": "Vertical padding (Desktop)",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desktop",
+      "label": "Horizontal padding (Desktop)",
+      "min": 0,
+      "max": 400,
+      "step": 4,
+      "default": 300,
+      "unit": "px"
     }
   ],
   "presets": []
