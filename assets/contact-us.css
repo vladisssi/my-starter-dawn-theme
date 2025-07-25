@@ -1,0 +1,39 @@
+.contact-us__hero {
+  display: grid;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-height: 245px;
+  aspect-ratio: 1920 / 800;
+  position: relative;
+
+  grid-template-areas: "stack";
+  place-items: center;
+}
+
+.contact-us__hero-nav {
+  display: flex;
+  gap: 6px;
+
+  color: white;
+  grid-area: stack;
+  justify-self: start;
+  align-self: start;
+  margin-left: 16px;
+  margin-top: 16px;
+
+  @media (min-width: 1100px) {
+    margin-left: 165px;
+    margin-top: 24px;
+  }
+}
+
+.contact-us__hero-title {
+  grid-area: stack;
+  text-align: center;
+
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 70px;
+  color: white;
+}
