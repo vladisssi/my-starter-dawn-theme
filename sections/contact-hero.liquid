@@ -1,10 +1,11 @@
 {{ 'contact-us.css' | asset_url | stylesheet_tag }}
 
 <section class="contact-us">
-  {% assign bg_image = section.settings.background_image | image_url: width: 1920 %}
-  {% unless bg_image %}
+  {% if section.settings.background_image != blank %}
+    {% assign bg_image = section.settings.background_image | image_url: width: 1920 %}
+  {% else %}
     {% assign bg_image = 'bg-contact-us-hero.jpg' | asset_url %}
-  {% endunless %}
+  {% endif %}
 
   <div class="contact-us__hero" style="background-image: url({{ bg_image }})">
     <nav class="contact-us__hero-nav" aria-label="Breadcrumb">
