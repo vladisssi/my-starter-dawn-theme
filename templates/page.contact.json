@@ -52,10 +52,15 @@
         "padding_x_desktop": 80,
         "padding_y_desktop": 60
       }
+    },
+    "about":{
+      "type":"about",
+      "settings":{}
     }
   },
   "order": [
     "hero",
-    "content"
+    "content",
+    "about"
   ]
 }

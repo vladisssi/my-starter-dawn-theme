@@ -1,0 +1,30 @@
+{{ 'section-about.css' | asset_url | stylesheet_tag }}
+
+<section class="about-section" aria-label="About Section">
+  <div class="about">
+    <div class="about__info">
+      <h2 class="about__info-title">Our Company</h2>
+      <p class="about__info-paragraph">
+        GOpure was launched by Bloc Enterprises, a specialized distribution & marketing company introducing consumer
+        products distinguished by innovation, technology and disruptive solutions to everyday problems that improve the
+        health and well-being of people and pets. The comp any strives to practice sustainability principles in all
+        operations and be a good steward of the earth. Like many amazing innovations, the inspiration for the GOpure Pod
+        happened the instant its inventor in Ireland was determined to find a better solution after removing many dozens
+        of used plastic water bottles from his car, most over half full. He was ashamed and disgusted by this wasteful
+        consumption and inefficiency so he sought out world-renowned microbiologist, Dr Ronald Russell at Trinity
+        College in Dublin, to help realize his vision of introducing a portable water purifier for everyday use and
+        eliminate the need for single use plastic water bottles.
+      </p>
+    </div>
+
+    <div class="about__image-wrapper">
+      <img class="about__image" src="{{ 'photos_right.png'|  asset_url }}" width="auto" height="auto">
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us"
+}
+{% endschema %}
