@@ -1,0 +1,99 @@
+{{ 'contact-us.css' | asset_url | stylesheet_tag }}
+
+<section class="contact-us">
+  {% assign bg_image = section.settings.background_image | image_url: width: 1920 %}
+  {% unless bg_image %}
+    {% assign bg_image = 'bg-contact-us-hero.jpg' | asset_url %}
+  {% endunless %}
+
+  <div class="contact-us__hero" style="background-image: url({{ bg_image }})">
+    <nav class="contact-us__hero-nav" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}"><strong>Home</strong></a
+      ><img
+        src="{{ 'input-search-icon.svg' | asset_url }}"
+        alt="Search Icon"
+        class="search-icon"
+        width="12px"
+        height="12px"
+
+      ><span>Contact Us</span>
+    </nav>
+    <h1 class="contact-us__hero-title">{{ section.settings.title }}</h1>
+  </div>
+</section>
+
+<style>
+  .contact-us__hero-title {
+    color: {{ section.settings.title_color }};
+    font-size: {{ section.settings.title_size-mobile }}px;
+
+    @media (min-width: 1100px) {
+      font-size: {{ section.settings.title_size-desktop }}px;
+    }
+  }
+
+  .contact-us__hero-nav {
+    color: {{ section.settings.nav_color }};
+    font-size: {{ section.settings.nav_size }}px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Contact Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Upload a background image for this section"
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "title_size-mobile",
+      "label": "Title Font Size (Mobile)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_size-desktop",
+      "label": "Title Font Size (Desktop)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation color",
+      "default": "#DFDFDF"
+    },
+    {
+      "type": "range",
+      "id": "nav_size",
+      "label": "Navigation Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 16
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
