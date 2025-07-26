@@ -1,0 +1,158 @@
+{{ 'contact-content.css' | asset_url | stylesheet_tag }}
+
+<div class="contact-us__container">
+  <p class="contact-us__description">
+    {{ section.settings.description_text }}
+  </p>
+
+  {% for block in section.blocks %}
+    {% if block.type == 'email' %}
+      {% comment %} if block has a type of email render this item {% endcomment %}
+      <div class="contact-us__contact-item">
+        <img src="{{ 'email-icon.svg' |  asset_url }}" alt="Email Img" height="47" width="32">
+
+        <div class="contact-us__contact-text">
+          <h3 class="contact-us__contact-label">{{ block.settings.label }}</h3>
+          <p class="contact-us__contact-info">{{ block.settings.email }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.type == 'location' %}
+      {% comment %} if block has a type of location render this item {% endcomment %}
+      <div class="contact-us__contact-item">
+        <img src="{{ 'location-icon.svg' | asset_url }}" alt="Location Icon" height="47" width="32">
+
+        <div class="contact-us__contact-text">
+          <h3 class="contact-us__contact-label">{{ block.settings.label }}</h3>
+          <p class="contact-us__contact-info">{{ block.settings.address }}</p>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style>
+   .contact-us__description {
+     color: {{ section.settings.description_text_color }};
+     font-size: {{ section.settings.description_text_size }}px;
+   }
+
+  .contact-us__container {
+     background-color: {{ section.settings.background }};
+     padding: {{ section.settings.padding_y_mobile }}px {{ section.settings.padding_x_mobile }}px;
+
+     @media (min-width: 1000px) {
+       padding: {{ section.settings.padding_y_desktop }}px {{ section.settings.padding_x_desktop }}px;
+     }
+   }
+</style>
+
+{% schema %}
+{
+  "name": "Contact Information",
+  "settings": [
+    {
+      "id": "description_text",
+      "type": "text",
+      "label": "Description text",
+      "default": "We appreciate your business and want to ensure you are satisfied with your GOpure product! Please contact us with any questions you have about the product, or if we can help you in any way."
+    },
+    {
+      "id": "description_text_color",
+      "type": "color",
+      "label": "Description text color",
+      "default": "#000000"
+    },
+    {
+      "id": "description_text_size",
+      "type": "range",
+      "label": "Description text size (px)",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "id": "background",
+      "type": "color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "padding_x_mobile",
+      "type": "range",
+      "label": "Padding X (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "id": "padding_y_mobile",
+      "type": "range",
+      "label": "Padding Y (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "id": "padding_x_desktop",
+      "type": "range",
+      "label": "Padding X (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "id": "padding_y_desktop",
+      "type": "range",
+      "label": "Padding Y (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "email",
+      "name": "Email",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "For customer support:"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email",
+          "default": "contact@gopurepod.com"
+        }
+      ]
+    },
+    {
+      "type": "location",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Our location:"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Address",
+          "default": "1234 Main Street, Los Angeles, CA 90001"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

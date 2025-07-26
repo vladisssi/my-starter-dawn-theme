@@ -1,6 +1,11 @@
 {{ 'section-hero.css' | asset_url | stylesheet_tag }}
 
-<section class="hero" style="background-image: url({{ 'background-hero.jpg' |  asset_url }})" aria-label="Hero section">
+{% assign bg_image = section.settings.background_image | image_url: width: 1920 %}
+{% unless bg_image %}
+  {% assign bg_image = 'background-hero.jpg' | asset_url %}
+{% endunless %}
+
+<section class="hero" style="background-image: url({{ bg_image }})" aria-label="Hero section">
   <div class="hero__content">
     {% comment %} i’m using a div instead of an h1 because in the schema i already set the default value of the richtext with an h1 tag so i assume section.settings.title already includes the h1 and i don’t want to nest heading tags did i get that right {% endcomment %}
     <div class="hero__title">{{ section.settings.title }}</div>
@@ -47,6 +52,12 @@
 {
   "name": "Hero",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Upload a background image for this section"
+    },
     {
       "type": "richtext",
       "id": "title",
