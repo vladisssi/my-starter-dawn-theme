@@ -8,6 +8,9 @@
     padding: 60px 165px;
     gap: 60px;
   }
+
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
 .about {

@@ -9,12 +9,53 @@
  */
 {
   "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "<h1>MAKE A GREAT FIRST IMPRESSION</h1>",
+        "title_color": "#f1f1f1",
+        "title_size_desktop": 48,
+        "title_size_mobile": 36,
+        "subtitle": "Add images and text to give focus to your chosen product, collection, or blog post",
+        "subtitle_color": "#605e5c",
+        "subtitle_size_desktop": 18,
+        "subtitle_size_mobile": 14,
+        "button_label": "Shop Now",
+        "button_text_size": 14,
+        "button_text_color": "#ffffff",
+        "button_background_color": "#212322",
+        "background_blur": 4
+      }
+    },
     "about": {
       "type": "about",
+      "blocks": {
+        "about_block_C7QMc4": {
+          "type": "about_block",
+          "settings": {
+            "title": "Our Company",
+            "text": "GOpure was launched by Bloc Enterprises, a specialized distribution & marketing company introducing consumer products distinguished by innovation, technology and disruptive solutions to everyday problems that improve the health and well-being of people and pets. The company strives to practice sustainability principles in all operations and be a good steward of the earth.",
+            "image": "shopify://shop_images/photos_right.png"
+          }
+        },
+        "about_block_yfJeqr": {
+          "type": "about_block",
+          "settings": {
+            "title": "About PuriBloc",
+            "text": "PuriBloc is the innovative water purification, preservation technology inside GOpure, a portable, environmentally friendly Pod that keeps drinking water clean and safe, while also greatly improving taste. Within seconds, contaminants found in ordinary tap water are neutralized and the pH balance is optimized for healthy hydration. Unlike carbon water filters that only work once, PuriBloc technology works continuously through a natural process known as ionic exchange and keeps pure water fresh and great tasting for months.\n\nThe adsorptive power of GOpure’s advanced microporous ceramic core is mind-boggling due to the enormous surface area for its volume with which water can react. This high porosity surface area carries millions of negatively charged binding sites, which attract and adsorb heavy metals along with other chemical or organic impurities, including bacteria.\n\nThe GOpure Pod is changing the way the world drinks water by continually purifying and enhancing your drinking water on the go while also helping to save our planet: using one GOpure Pod in a personal re-usable bottle replaces 2,000 single-use water bottles with zero plastic waste.",
+            "image": "shopify://shop_images/Rectangle_28.png"
+          }
+        }
+      },
+      "block_order": [
+        "about_block_C7QMc4",
+        "about_block_yfJeqr"
+      ],
       "settings": {}
     }
   },
   "order": [
+    "hero",
     "about"
   ]
 }
