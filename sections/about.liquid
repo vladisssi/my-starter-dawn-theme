@@ -1,0 +1,118 @@
+{{ 'section-about.css' | asset_url | stylesheet_tag }}
+
+<section class="about-section" aria-label="About Section">
+  <div class="about">
+    {% for block in section.blocks %}
+      {% if block.type == 'about_info' %}
+        <div class="about__info">
+          <h2 class="about__info-title">{{ block.settings.title }}</h2>
+          <p class="about__info-paragraph">{{ block.settings.text }}</p>
+        </div>
+      {% elsif block.type == 'about_image' %}
+        <div class="about__image-wrapper">
+          <img
+            class="about__image"
+            src="{{ block.settings.image | img_url: 'master' }}"
+            alt="{{ block.settings.title }}"
+            loading="lazy"
+            height="auto"
+            width="auto"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .about-section {
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .about__info-title {
+    color: {{ section.settings.title_color }};
+    font-size: {{ section.settings.title_size }}px;
+  }
+
+  .about__info-paragraph {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Us",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 35,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#606060"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about_info",
+      "name": "About Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Our Company"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Paragraph",
+          "default": "GOpure was laun"
+        }
+      ]
+    },
+    {
+      "type": "about_image",
+      "name": "About Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
