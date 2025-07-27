@@ -1,7 +1,5 @@
 {{ 'section-about.css' | asset_url | stylesheet_tag }}
 
-{{ 'section-about.css' | asset_url | stylesheet_tag }}
-
 <section class="about-section" aria-label="About Section">
   {% for block in section.blocks %}
     <div class="about" id="block-{{ block.id }}">
@@ -16,19 +14,73 @@
           src="{{ block.settings.image | img_url: 'master' }}"
           alt="{{ block.settings.title }}"
           loading="lazy"
-          width="auto"
           height="auto"
+          width="auto"
         >
       </div>
     </div>
   {% endfor %}
 </section>
 
-<style></style>
+<style>
+  .about-section {
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .about__info-title {
+    color: {{ section.settings.title_color }};
+    font-size: {{ section.settings.title_size }}px;
+  }
+
+  .about__info-paragraph {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+  }
+</style>
 
 {% schema %}
 {
   "name": "About Us",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 35,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#606060"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text Font Size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    }
+  ],
   "blocks": [
     {
       "type": "about_block",
