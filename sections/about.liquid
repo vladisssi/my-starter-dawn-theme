@@ -1,25 +1,27 @@
 {{ 'section-about.css' | asset_url | stylesheet_tag }}
 
 <section class="about-section" aria-label="About Section">
-  {% for block in section.blocks %}
-    <div class="about" id="block-{{ block.id }}">
-      <div class="about__info">
-        <h2 class="about__info-title">{{ block.settings.title }}</h2>
-        <p class="about__info-paragraph">{{ block.settings.text }}</p>
-      </div>
-
-      <div class="about__image-wrapper">
-        <img
-          class="about__image"
-          src="{{ block.settings.image | img_url: 'master' }}"
-          alt="{{ block.settings.title }}"
-          loading="lazy"
-          height="auto"
-          width="auto"
-        >
-      </div>
-    </div>
-  {% endfor %}
+  <div class="about">
+    {% for block in section.blocks %}
+      {% if block.type == 'about_info' %}
+        <div class="about__info">
+          <h2 class="about__info-title">{{ block.settings.title }}</h2>
+          <p class="about__info-paragraph">{{ block.settings.text }}</p>
+        </div>
+      {% elsif block.type == 'about_image' %}
+        <div class="about__image-wrapper">
+          <img
+            class="about__image"
+            src="{{ block.settings.image | img_url: 'master' }}"
+            alt="{{ block.settings.title }}"
+            loading="lazy"
+            height="auto"
+            width="auto"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 </section>
 
 <style>
@@ -83,8 +85,8 @@
   ],
   "blocks": [
     {
-      "type": "about_block",
-      "name": "About Block",
+      "type": "about_info",
+      "name": "About Info",
       "settings": [
         {
           "type": "text",
@@ -97,7 +99,13 @@
           "id": "text",
           "label": "Paragraph",
           "default": "GOpure was laun"
-        },
+        }
+      ]
+    },
+    {
+      "type": "about_image",
+      "name": "About Image",
+      "settings": [
         {
           "type": "image_picker",
           "id": "image",
