@@ -53,7 +53,8 @@
 }
 
 .footer__form {
-    padding-bottom: 26px
+  padding-bottom: 26px;
+  max-width: 300px;
 }
 
 .footer__socials {
@@ -82,8 +83,8 @@
 .search-input {
   background: transparent;
   font-size: 14px;
-
   flex: 1;
+  color: #F1F1F1;
 }
 
 .footer__form-button {

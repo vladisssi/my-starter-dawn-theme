@@ -76,18 +76,37 @@
     <div class="footer__bottom">
       {% comment %} <img class="footer__logo" src="{{ 'logo-white.svg' | asset_url }}" alt="Logo Img" width="264" height="66"> {% endcomment %}
       <picture class="footer__logo">
-        <source
-          srcset="{{ 'logo-sign-white.svg' | asset_url }}"
-          media="(max-width: 767px)"
-          width="66"
-          height="66"
-        >
-        <img
-          src="{{ 'logo-white.svg' | asset_url }}"
-          alt="Logo Img"
-          width="264"
-          height="66"
-        >
+        {% if section.settings.logo_mobile != blank %}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ section.settings.logo_mobile | img_url: 'master' }}"
+            width="66"
+            height="66"
+          >
+        {% else %}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ 'logo-sign-white.svg' | asset_url }}"
+            width="66"
+            height="66"
+          >
+        {% endif %}
+
+        {% if section.settings.logo_desktop != blank %}
+          <img
+            src="{{ section.settings.logo_desktop | img_url: 'master' }}"
+            alt="Logo Img"
+            width="264"
+            height="66"
+          >
+        {% else %}
+          <img
+            src="{{ 'logo-white.svg' | asset_url }}"
+            alt="Logo Img"
+            width="264"
+            height="66"
+          >
+        {% endif %}
       </picture>
       <div>{{ section.settings.copyright }}</div>
     </div>
@@ -103,6 +122,16 @@
       "type": "text",
       "label": "Copyright",
       "default": "© 2023 | Focused Fits | All Rights Reserved."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_desktop",
+      "label": "Desktop Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_mobile",
+      "label": "Mobile Logo"
     }
   ],
   "max_blocks": 4,

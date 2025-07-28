@@ -1,5 +1,8 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
+{% assign menu = linklists[section.settings.menu_links] %}
+{% assign default_menu = linklists['header-menu'] %}
+
 <header class="header">
   <div class="header__container">
     <div class="header__burger" role="button" aria-label="Open menu" tabindex="0">
@@ -11,70 +14,117 @@
     <div class="header__nav-overlay">
       <nav class="header__nav">
         <ul class="header__nav-list">
-          <li class="header__nav-item">
-            <a class="header__nav-link" href="#">Crew Necks</a>
-          </li>
-          <li class="header__nav-item">
-            <a class="header__nav-link" href="#">V-Necks</a>
-          </li>
-          <li class="header__nav-item">
-            <a class="header__nav-link" href="#">Activewear</a>
-          </li>
-          <li class="header__nav-item">
-            <a class="header__nav-link" href="#">Bundles</a>
-          </li>
+          {% if menu.links.size > 0 %}
+            {% for link in menu.links %}
+              <li class="header__nav-item">
+                <a class="header__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+
+          {% else %}
+            {% for link in default_menu.links %}
+              <li class="header__nav-item">
+                <a class="header__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
         </ul>
       </nav>
     </div>
 
     <nav class="header__nav-desktop">
       <ul class="header__nav-list-desktop">
-        <li class="header__nav-item-desktop">
-          <a class="header__nav-link-desktop" href="#">Crew Necks</a>
-        </li>
-        <li class="header__nav-item-desktop">
-          <a class="header__nav-link-desktop" href="#">V-Necks</a>
-        </li>
-        <li class="header__nav-item-desktop">
-          <a class="header__nav-link-desktop" href="#">Activewear</a>
-        </li>
-        <li class="header__nav-item-desktop">
-          <a class="header__nav-link-desktop" href="#">Bundles</a>
-        </li>
+        {% if menu.links.size > 0 %}
+          {% for link in menu.links %}
+            <li class="header__nav-item-desktop">
+              <a class="header__nav-link-desktop" href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {% else %}
+          {% for link in default_menu.links %}
+            <li class="header__nav-item-desktop">
+              <a class="header__nav-link-desktop" href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
       </ul>
     </nav>
 
     <div class="header__logo">
       <picture>
-        <source
-          media="(min-width: 500px)"
-          srcset="{{ 'logo-black.svg' | asset_url }}"
-          width="264"
-          height="66"
-        >
-        <img
-          src="{{ 'logo-black.svg' | asset_url }}"
-          alt="logo"
-          width="121"
-          height="45"
-          loading="eager"
-          fetchpriority="high"
-        >
+        {% if section.settings.logo_mobile != blank %}
+          <source
+            media="(max-width: 499px)"
+            srcset="{{ section.settings.logo_mobile | img_url: 'master' }}"
+            width="121"
+            height="45"
+          >
+        {% else %}
+          <source
+            media="(max-width: 499px)"
+            srcset="{{ 'logo-black.svg' | asset_url }}"
+            width="121"
+            height="45"
+          >
+        {% endif %}
+
+        {% if section.settings.logo_desktop != blank %}
+          <source
+            media="(min-width: 500px)"
+            srcset="{{ section.settings.logo_desktop | img_url: 'master' }}"
+            width="264"
+            height="66"
+          >
+          <img
+            src="{{ section.settings.logo_desktop | img_url: 'master' }}"
+            alt="Brand Logo"
+            width="264"
+            height="66"
+          >
+        {% else %}
+          <source
+            media="(min-width: 500px)"
+            srcset="{{ 'logo-black.svg' | asset_url }}"
+            width="264"
+            height="66"
+          >
+          <img
+            src="{{ 'logo-black.svg' | asset_url }}"
+            alt="Brand Logo"
+            width="121"
+            height="45"
+            loading="eager"
+            fetchpriority="high"
+          >
+        {% endif %}
       </picture>
     </div>
 
     <div class="header__right">
-      <a href="{{ routes.cart_url }}" class="icon-link">
-        <img class="icon" src="{{'cart-icon.svg' |  asset_url}}" alt="cart" width="24" height="24">
-      </a>
-
-      <a href="{{ routes.account_url }}" class="icon-link">
-        <img class="icon" src="{{'profile-icon.svg' |  asset_url}}" alt="profile" width="24" height="24">
-      </a>
-
-      <a href="{{ routes.search_url }}" class="icon-link">
-        <img class="icon" src="{{'search-icon.svg' |  asset_url}}" alt="search" width="24" height="24">
-      </a>
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <a href="{{ block.settings.icon_link }}" class="icon-link">
+            <img
+              class="icon"
+              src="{{ block.settings.icon_image | img_url: '24x24' }}"
+              alt="{{ block.settings.icon_alt }}"
+              width="24"
+              height="24"
+            >
+          </a>
+        {% endfor %}
+      {% else %}
+        <!-- for defaukt -->
+        <a href="{{ routes.cart_url }}" class="icon-link">
+          <img class="icon" src="{{ 'cart-icon.svg' | asset_url }}" alt="cart" width="24" height="24">
+        </a>
+        <a href="{{ routes.account_url }}" class="icon-link">
+          <img class="icon" src="{{ 'profile-icon.svg' | asset_url }}" alt="profile" width="24" height="24">
+        </a>
+        <a href="{{ routes.search_url }}" class="icon-link">
+          <img class="icon" src="{{ 'search-icon.svg' | asset_url }}" alt="search" width="24" height="24">
+        </a>
+      {% endif %}
     </div>
   </div>
 </header>
@@ -95,9 +145,64 @@
   });
 </script>
 
+<style>
+  .header {
+    background-color: {{ section.settings.background_color }};
+  }
+</style>
+
 {% schema %}
 {
   "name": "Header",
-  "settings": []
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_links",
+      "label": "Menu Links"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_desktop",
+      "label": "Desktop Logo",
+      "info": "Upload a logo for desktop view"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_mobile",
+      "label": "Mobile Logo",
+      "info": "Upload a logo for mobile view"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Navigation Icon(optional)",
+      "settings": [
+        {
+          "type": "url",
+          "id": "icon_link",
+          "label": "Link URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "icon_alt",
+          "label": "Alt Text",
+          "default": "Icon"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5
 }
 {% endschema %}
