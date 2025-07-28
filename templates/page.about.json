@@ -26,33 +26,9 @@
         "button_background_color": "#212322",
         "background_blur": 4
       }
-    },
-    "about": {
-      "type": "about",
-      "blocks": {
-        "about_block_XAGg8J": {
-          "type": "about_block",
-          "settings": {
-            "title": "Our Company",
-            "text": "GOpure was launched by Bloc Enterprises, a specialized distribution & marketing company introducing consumer products distinguished by innovation, technology and disruptive solutions to everyday problems that improve the health and well-being of people and pets. The company strives to practice sustainability principles in all operations and be a good steward of the earth.\n\nLike many amazing innovations, the inspiration for the GOpure Pod happened the instant its inventor in Ireland was determined to find a better solution after removing many dozens of used plastic water bottles from his car, most over half full. He was ashamed and disgusted by this wasteful consumption and inefficiency so he sought out world-renowned microbiologist, Dr Ronald Russell at Trinity College in Dublin, to help realize his vision of introducing a portable water purifier for everyday use and eliminate the need for single use plastic water bottles.",
-            "image": "shopify://shop_images/photos_right.png"
-          }
-        }
-      },
-      "block_order": [
-        "about_block_XAGg8J"
-      ],
-      "settings": {
-        "background_color": "#ffffff",
-        "title_color": "#121212",
-        "title_size": 35,
-        "text_color": "#606060",
-        "text_size": 15
-      }
     }
   },
   "order": [
     "hero",
-    "about"
   ]
 }

@@ -1,4 +1,99 @@
-<h1>HEADER</h1>
+{{ 'header.css' | asset_url | stylesheet_tag }}
+
+<header class="header">
+  <div class="header__container">
+    <div class="header__burger" role="button" aria-label="Open menu" tabindex="0">
+      <span class="header__burger-line"></span>
+      <span class="header__burger-line"></span>
+      <span class="header__burger-line"></span>
+    </div>
+
+    <div class="header__nav-overlay">
+      <nav class="header__nav">
+        <ul class="header__nav-list">
+          <li class="header__nav-item">
+            <a class="header__nav-link" href="#">Crew Necks</a>
+          </li>
+          <li class="header__nav-item">
+            <a class="header__nav-link" href="#">V-Necks</a>
+          </li>
+          <li class="header__nav-item">
+            <a class="header__nav-link" href="#">Activewear</a>
+          </li>
+          <li class="header__nav-item">
+            <a class="header__nav-link" href="#">Bundles</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <nav class="header__nav-desktop">
+      <ul class="header__nav-list-desktop">
+        <li class="header__nav-item-desktop">
+          <a class="header__nav-link-desktop" href="#">Crew Necks</a>
+        </li>
+        <li class="header__nav-item-desktop">
+          <a class="header__nav-link-desktop" href="#">V-Necks</a>
+        </li>
+        <li class="header__nav-item-desktop">
+          <a class="header__nav-link-desktop" href="#">Activewear</a>
+        </li>
+        <li class="header__nav-item-desktop">
+          <a class="header__nav-link-desktop" href="#">Bundles</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header__logo">
+      <picture>
+        <source
+          media="(min-width: 500px)"
+          srcset="{{ 'logo-black.svg' | asset_url }}"
+          width="264"
+          height="66"
+        >
+        <img
+          src="{{ 'logo-black.svg' | asset_url }}"
+          alt="logo"
+          width="121"
+          height="45"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
+    </div>
+
+    <div class="header__right">
+      <a href="{{ routes.cart_url }}" class="icon-link">
+        <img class="icon" src="{{'cart-icon.svg' |  asset_url}}" alt="cart" width="24" height="24">
+      </a>
+
+      <a href="{{ routes.account_url }}" class="icon-link">
+        <img class="icon" src="{{'profile-icon.svg' |  asset_url}}" alt="profile" width="24" height="24">
+      </a>
+
+      <a href="{{ routes.search_url }}" class="icon-link">
+        <img class="icon" src="{{'search-icon.svg' |  asset_url}}" alt="search" width="24" height="24">
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('.header');
+  const burger = document.querySelector('.header__burger');
+  const overlay = document.querySelector('.header__nav-overlay');
+
+  burger.addEventListener('click', () => {
+    header.classList.add('active');
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      header.classList.remove('active');
+    }
+  });
+</script>
 
 {% schema %}
 {
