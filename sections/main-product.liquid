@@ -1,8 +1,6 @@
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 
 <div class="product">
-  {% comment %} <div style="width: 40%; height: 50vh; background-color: red">vfd</div> {% endcomment %}
-
   <div class="product__slider-wrapper">
     {% if product.images.size > 1 %}
       <div class="product__slider">
@@ -39,121 +37,143 @@
     {% endif %}
   </div>
 
-  <div class="product__data">
-    <div class="product__data-info">
-      <h1 class="product__data-title">
-        {{ product.title | escape }}
-      </h1>
+  {% comment %}
+    <div class="product__thumbnails" style="width: 40%; height: 50vh; background-color: red">
+      <div>vfd</div>
+    </div>
+  {% endcomment %}
 
-      <div class="product__data-prices">
-        {% if product.compare_at_price and product.compare_at_price > product.price %}
-          <span class="product__data-prices-sale">
-            {{ product.price | money }}
-          </span>
-          <span class="product__data-prices-compare">
-            {{ product.compare_at_price | money }}
-          </span>
-        {% else %}
-          <span class="product__data-prices-regular">
-            {{ product.price | money }}
-          </span>
-        {% endif %}
+  <div class="product-gallery">
+    <ul class="product-gallery__thumbnails">
+      {% for image in product.images %}
+        <li class="product-gallery__thumbnail-item">
+          <img
+            src="{{ image | img_url: '96x122' }}"
+            alt="Thumbnail {{ forloop.index }}"
+            class="product-gallery__thumbnail"
+            width="auto"
+            height="auto"
+          >
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="product-gallery__main">
+      <img
+        id="product-gallery__main-image"
+        src="{{ product.selected_or_first_available_variant.featured_image | img_url: '800x800' }}"
+        alt="Main image"
+        class="product-gallery__image"
+        width="auto"
+        height="auto"
+      >
+    </div>
+  </div>
+
+  <div>
+    <div class="product__data">
+      <div class="product__data-info">
+        <h1 class="product__data-title">
+          {{ product.title | escape }}
+        </h1>
+
+        <div class="product__data-prices">
+          {% if product.compare_at_price and product.compare_at_price > product.price %}
+            <span class="product__data-prices-sale">
+              {{ product.price | money }}
+            </span>
+            <span class="product__data-prices-compare">
+              {{ product.compare_at_price | money }}
+            </span>
+          {% else %}
+            <span class="product__data-prices-regular">
+              {{ product.price | money }}
+            </span>
+          {% endif %}
+        </div>
       </div>
+
+      {% render 'separator' %}
+      {% form 'product', product, id: 'product__form', class: 'product__form' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <fieldset class="product__sizes">
+          <legend class="product__sizes-title">
+            Size: <span id="selected-size">{{ product.variants.first.title }}</span>
+            {% comment %} Wanna change the title {% endcomment %}
+          </legend>
+
+          {% for variant in product.variants %}
+            <label class="product__size">
+              <input
+                type="radio"
+                name="id"
+                value="{{ variant.id }}"
+                class="product__size-input"
+                {% unless variant.available %}
+                  disabled
+                {% endunless %}
+                {% if forloop.first and variant.available %}
+                  checked
+                {% endif %}
+              >
+              <span class="product__size-label">{{ variant.title }}</span>
+            </label>
+          {% endfor %}
+        </fieldset>
+        {% render 'separator' %}
+
+        <div class="product__purchase">
+          <div class="product__purchase-quantity">
+            {% render 'minus' %}
+            <span class="product__purchase-quantity-value">1</span>
+            {% render 'plus' %}
+          </div>
+
+          <button type="submit" class="product__purchase-button">Add to cart</button>
+        </div>
+      {% endform %}
     </div>
 
-    {% render 'separator' %}
-    {% form 'product', product, id: 'product__form', class: 'product__form' %}
-      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-      <fieldset class="product__sizes">
-        <legend class="product__sizes-title">
-          Size: <span id="selected-size">{{ product.variants.first.title }}</span>
-          {% comment %} Wanna change the title {% endcomment %}
-        </legend>
-
-        {% for variant in product.variants %}
-          <label class="product__size">
-            <input
-              type="radio"
-              name="id"
-              value="{{ variant.id }}"
-              class="product__size-input"
-              {% unless variant.available %}
-                disabled
-              {% endunless %}
-              {% if forloop.first and variant.available %}
-                checked
-              {% endif %}
-            >
-            <span class="product__size-label">{{ variant.title }}</span>
-          </label>
-        {% endfor %}
-      </fieldset>
-      {% render 'separator' %}
-
-      <div class="product__purchase">
-        <div class="product__purchase-quantity">
-          {% render 'minus' %}
-          <span class="product__purchase-quantity-value">1</span>
-          {% render 'plus' %}
+    <div class="metafields">
+      {% if product.metafields.custom.product_details %}
+        <div class="metafields__item">
+          <div class="metafields__header">
+            <div class="metafields__title">Product details</div>
+            <button class="metafields__toggle">
+              <img
+                src="{{ 'arrow.svg' | asset_url }}"
+                alt="Toggle Button"
+                width="16"
+                height="16"
+                class="metafields__icon"
+              >
+            </button>
+          </div>
+          <div class="metafields__content">{{ product.metafields.custom.product_details }}</div>
         </div>
+      {% endif %}
 
-        <button type="submit" class="product__purchase-button">Add to cart</button>
-      </div>
-    {% endform %}
-  </div>
-
-  <div class="metafields">
-    {% if product.metafields.custom.product_details %}
-      <div class="metafields__item">
-        <div class="metafields__header">
-          <div class="metafields__title">Product details</div>
-          <button class="metafields__toggle">
-            <img
-              src="{{ 'arrow.svg' | asset_url }}"
-              alt="Toggle Button"
-              width="16"
-              height="16"
-              class="metafields__icon"
-            >
-          </button>
+      {% if product.metafields.custom.product_features %}
+        <div class="metafields__item">
+          <div class="metafields__header">
+            <div class="metafields__title">Product features</div>
+            <button class="metafields__toggle">
+              <img
+                src="{{ 'arrow.svg' | asset_url }}"
+                alt="Toggle Button"
+                width="16"
+                height="16"
+                class="metafields__icon"
+              >
+            </button>
+          </div>
+          <div class="metafields__content">{{ product.metafields.custom.product_features }}</div>
         </div>
-        <div class="metafields__content">{{ product.metafields.custom.product_details }}</div>
-      </div>
-    {% endif %}
-
-    {% if product.metafields.custom.product_features %}
-      <div class="metafields__item">
-        <div class="metafields__header">
-          <div class="metafields__title">Product features</div>
-          <button class="metafields__toggle">
-            <img
-              src="{{ 'arrow.svg' | asset_url }}"
-              alt="Toggle Button"
-              width="16"
-              height="16"
-              class="metafields__icon"
-            >
-          </button>
-        </div>
-        <div class="metafields__content">{{ product.metafields.custom.product_features }}</div>
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleButtons = document.querySelectorAll('.metafields__toggle');
-
-    toggleButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const item = button.closest('.metafields__item');
-        item.classList.toggle('active');
-      });
-    });
-  });
-</script>
 
 {% schema %}
 {
