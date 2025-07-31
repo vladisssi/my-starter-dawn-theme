@@ -37,12 +37,6 @@
     {% endif %}
   </div>
 
-  {% comment %}
-    <div class="product__thumbnails" style="width: 40%; height: 50vh; background-color: red">
-      <div>vfd</div>
-    </div>
-  {% endcomment %}
-
   <div class="product-gallery">
     <ul class="product-gallery__thumbnails">
       {% for image in product.images %}
@@ -110,6 +104,7 @@
                 name="id"
                 value="{{ variant.id }}"
                 class="product__size-input"
+                id="product-id"
                 {% unless variant.available %}
                   disabled
                 {% endunless %}
@@ -174,6 +169,25 @@
     </div>
   </div>
 </div>
+
+<script>
+    let product = {{ product | json }}
+
+
+  document.querySelectorAll('.product__size-input').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      // FIND MATCHED VARIANT BY SELECTED SIZE
+      const selectedId = document.querySelector('.product__size-input:checked')?.value;
+
+      let matchedVariant = product.variants.find((variant) => {
+        return String(variant.id) === selectedId;
+      });
+
+      // Change product form variant Id
+      document.querySelector('#product-id').value = matchedVariant.id;
+    });
+  });
+</script>
 
 {% schema %}
 {
