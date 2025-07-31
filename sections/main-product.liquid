@@ -89,7 +89,7 @@
 
       {% render 'separator' %}
       {% form 'product', product, id: 'product__form', class: 'product__form' %}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input id="product-id" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
         <fieldset class="product__sizes">
           <legend class="product__sizes-title">
@@ -97,6 +97,8 @@
             {% comment %} Wanna change the title {% endcomment %}
           </legend>
 
+          {% assign selected_variant_id = params.variant | default: product.variants.first.id %}
+          {% assign firstOpen = %}
           {% for variant in product.variants %}
             <label class="product__size">
               <input
@@ -104,11 +106,10 @@
                 name="id"
                 value="{{ variant.id }}"
                 class="product__size-input"
-                id="product-id"
                 {% unless variant.available %}
                   disabled
                 {% endunless %}
-                {% if forloop.first and variant.available %}
+                {% if variant.id == selected_variant_id %}
                   checked
                 {% endif %}
               >
@@ -185,6 +186,11 @@
 
       // Change product form variant Id
       document.querySelector('#product-id').value = matchedVariant.id;
+
+      // Change URL to matched variant
+      let url = new URLParse(window.location.href, true)
+      url.query.variant = matchedVariant.id;
+      window.history.replaceState(null, null, url.toString());
     });
   });
 </script>
