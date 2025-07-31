@@ -376,6 +376,11 @@
 
     <script src="{{ 'slider.js' | asset_url }}" defer></script>
     <script src="{{ 'product-drawer.js' | asset_url }}" defer></script>
+    <script
+      src="{{ 'formatMoney.js' | asset_url }}"
+      defer="defer"
+      data-currency="{{ shop.currency | json }}' }}"
+    ></script>
     <script src=" https://cdn.jsdelivr.net/npm/url-parse@1.5.10/dist/url-parse.min.js" defer></script>
   </body>
 </html>

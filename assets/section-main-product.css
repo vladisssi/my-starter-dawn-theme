@@ -1,4 +1,3 @@
-
 .product {
   max-width: 1600px;
   margin: 0 auto;
@@ -6,10 +5,15 @@
 
   @media (min-width: 1000px) {
     display: grid;
-    grid-template-columns: 0.52fr 0.48fr;
+    grid-template-columns: 1.5fr 1fr;
     padding-top: 24px;
     padding-left: 56px;
     padding-right: 56px;
+  }
+  
+  @media (min-width: 1300px) {
+    display: grid;
+    grid-template-columns: 0.52fr 0.48fr;
   }
 }
 
@@ -116,6 +120,10 @@
   margin-top: 24px;
 }
 
+.hidden {
+  display: none;
+}
+
 .product__data-prices {
   display: flex;
   align-items: end;
@@ -124,10 +132,9 @@
 }
 
 .product__data-prices-sale {
-  font-family: Inter;
   font-weight: 400;
   font-style: Regular;
-  font-size: 18px;
+  font-size: 20px;
   leading-trim: NONE;
   line-height: 22px;
   letter-spacing: 0%;
@@ -135,7 +142,6 @@
 }
 
 .product__data-prices-compare {
-  font-family: Inter;
   font-weight: 400;
   font-style: Regular;
   font-size: 16px;
@@ -147,10 +153,9 @@
 }
 
 .product__data-prices-regular {
-  font-family: Inter;
   font-weight: 400;
   font-style: Regular;
-  font-size: 18px;
+  font-size: 20px;
   leading-trim: NONE;
   line-height: 22px;
   letter-spacing: 0%;
@@ -252,6 +257,7 @@
 
 
 .product__purchase-button {
+  cursor: pointer;
   width: 100%;
   height: 50px;
   text-align: center;
@@ -347,6 +353,7 @@
 
 .product-gallery__thumbnail-item {
   height: 122px;
+  cursor: pointer;
   width: 96px;
 }
 

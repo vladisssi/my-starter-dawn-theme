@@ -72,18 +72,16 @@
         </h1>
 
         <div class="product__data-prices">
-          {% if product.compare_at_price and product.compare_at_price > product.price %}
-            <span class="product__data-prices-sale">
-              {{ product.price | money }}
-            </span>
-            <span class="product__data-prices-compare">
-              {{ product.compare_at_price | money }}
-            </span>
-          {% else %}
-            <span class="product__data-prices-regular">
-              {{ product.price | money }}
-            </span>
-          {% endif %}
+          {% assign variant = product.selected_or_first_available_variant %}
+          <span class="product__data-prices-sale">
+            {{ variant.price | money }}
+          </span>
+          <span class="product__data-prices-compare">
+            {{ variant.compare_at_price | money }}
+          </span>
+          <span class="product__data-prices-regular">
+            {{ variant.price | money }}
+          </span>
         </div>
       </div>
 
@@ -205,12 +203,30 @@
           const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
           document.querySelector('#selected-size').textContent = sizeValue;
 
+          // Change prices
+          const saleEl = document.querySelector('.product__data-prices-sale');
+          const compareEl = document.querySelector('.product__data-prices-compare');
+          const regularEl = document.querySelector('.product__data-prices-regular');
+
+          const formattedPrice = Shopify.formatMoney(matchedVariant.price);
+          const formattedCompare = Shopify.formatMoney(matchedVariant.compare_at_price);
+
+          saleEl.textContent = formattedPrice;
+          compareEl.textContent = formattedCompare;
+          regularEl.textContent = formattedPrice;
+
+          const hasDiscount =
+          matchedVariant.compare_at_price &&
+          matchedVariant.compare_at_price > matchedVariant.price;
+
+          saleEl.classList.toggle('hidden', !hasDiscount);
+          compareEl.classList.toggle('hidden', !hasDiscount);
+          regularEl.classList.toggle('hidden', hasDiscount);
+
           // Change URL to matched variant
           let url = new URLParse(window.location.href, true)
           url.query.variant = matchedVariant.id;
           window.history.replaceState(null, null, url.toString());
-
-
         });
       });
   });
