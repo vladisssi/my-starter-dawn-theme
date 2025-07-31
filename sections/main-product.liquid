@@ -93,28 +93,37 @@
 
         <fieldset class="product__sizes">
           <legend class="product__sizes-title">
-            Size: <span id="selected-size">{{ product.variants.first.title }}</span>
-            {% comment %} Wanna change the title {% endcomment %}
+            Size:
+            <span id="selected-size">
+              {% for option in product.options_with_values %}
+                {% if option.name == 'Size' %}
+                  {{ option.selected_value }}
+                {% endif %}
+              {% endfor %}
+            </span>
           </legend>
 
-          {% assign selected_variant_id = params.variant | default: product.variants.first.id %}
-          {% assign firstOpen = %}
-          {% for variant in product.variants %}
-            <label class="product__size">
-              <input
-                type="radio"
-                name="id"
-                value="{{ variant.id }}"
-                class="product__size-input"
-                {% unless variant.available %}
-                  disabled
-                {% endunless %}
-                {% if variant.id == selected_variant_id %}
-                  checked
-                {% endif %}
-              >
-              <span class="product__size-label">{{ variant.title }}</span>
-            </label>
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Size' %}
+              {% for value in option.values %}
+                {% assign matched_variant = product.variants | where: 'title', value | first %}
+                <label class="product__size">
+                  <input
+                    type="radio"
+                    name="{{ option.name }}"
+                    value="{{ matched_variant.id }}"
+                    class="product__size-input"
+                    {% if option.selected_value == value %}
+                      checked
+                    {% endif %}
+                    {% unless matched_variant.available %}
+                      disabled
+                    {% endunless %}
+                  >
+                  <span class="product__size-label">{{ value }}</span>
+                </label>
+              {% endfor %}
+            {% endif %}
           {% endfor %}
         </fieldset>
         {% render 'separator' %}
@@ -172,26 +181,38 @@
 </div>
 
 <script>
-    let product = {{ product | json }}
+  // BEcause loading 3-party library
+    document.addEventListener('DOMContentLoaded', () => {
+      let product = {{ product | json }}
+
+      // SIZE CHANGE
+      document.querySelectorAll('.product__size-input').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          // FIND MATCHED VARIANT BY SELECTED SIZE
+          const selectedId = document.querySelector('.product__size-input:checked')?.value;
+
+          let matchedVariant = product.variants.find((variant) => {
+            return String(variant.id) === selectedId;
+          });
+
+          if (!matchedVariant) return;
+
+          // Change product form variant Id
+          document.querySelector('#product-id').value = matchedVariant.id;
+
+          // Change selected size
+          const sizeIndex = product.options.findIndex(opt => opt === 'Size');
+          const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
+          document.querySelector('#selected-size').textContent = sizeValue;
+
+          // Change URL to matched variant
+          let url = new URLParse(window.location.href, true)
+          url.query.variant = matchedVariant.id;
+          window.history.replaceState(null, null, url.toString());
 
 
-  document.querySelectorAll('.product__size-input').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      // FIND MATCHED VARIANT BY SELECTED SIZE
-      const selectedId = document.querySelector('.product__size-input:checked')?.value;
-
-      let matchedVariant = product.variants.find((variant) => {
-        return String(variant.id) === selectedId;
+        });
       });
-
-      // Change product form variant Id
-      document.querySelector('#product-id').value = matchedVariant.id;
-
-      // Change URL to matched variant
-      let url = new URLParse(window.location.href, true)
-      url.query.variant = matchedVariant.id;
-      window.history.replaceState(null, null, url.toString());
-    });
   });
 </script>
 
