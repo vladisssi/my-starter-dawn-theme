@@ -246,13 +246,21 @@
   gap: 16px;
   height: 50px;
   @media (min-width: 1000px) {
-    width: 150px;
+    min-width: 150px;
   }
 }
 
 .product__purchase-quantity-button {
+  height: 16px;
+  width: 16px;
   font-size: 21px;
   cursor: pointer;
+}
+
+.product__purchase-quantity-value {
+  display: inline-block;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 

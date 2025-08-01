@@ -88,6 +88,7 @@
       {% render 'separator' %}
       {% form 'product', product, id: 'product__form', class: 'product__form' %}
         <input id="product-id" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input id="product-quantity" type="hidden" name="quantity" value="1">
 
         <fieldset class="product__sizes">
           <legend class="product__sizes-title">
@@ -179,35 +180,40 @@
 </div>
 
 <script>
-  // BEcause loading 3-party library
     document.addEventListener('DOMContentLoaded', () => {
-      let product = {{ product | json }}
+    // Get the product object from the Liquid template (thats exactly why i cant push this script to separated file)
+    let product = {{ product | json }}
 
-      // SIZE CHANGE
-      document.querySelectorAll('.product__size-input').forEach((radio) => {
-        radio.addEventListener('change', () => {
-          // FIND MATCHED VARIANT BY SELECTED SIZE
-          const selectedId = document.querySelector('.product__size-input:checked')?.value;
+    // Attach change event listeners to all size radio inputs
+    document.querySelectorAll('.product__size-input').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        // Get the selected variant ID from the checked radio
+        const selectedId = document.querySelector('.product__size-input:checked')?.value;
+        if (!selectedId) return; // Exit if nothing is selected
 
-          let matchedVariant = product.variants.find((variant) => {
-            return String(variant.id) === selectedId;
-          });
+        // Find the matching variant object by ID
+        let matchedVariant = product.variants.find(variant => String(variant.id) === selectedId);
+        if (!matchedVariant) return; // Exit if variant not found
 
-          if (!matchedVariant) return;
+        // Update the hidden input with the selected variant ID for the form
+        const productIdInput = document.querySelector('#product-id');
+        if (productIdInput) productIdInput.value = matchedVariant.id;
 
-          // Change product form variant Id
-          document.querySelector('#product-id').value = matchedVariant.id;
+        // Find the index of the "Size" option in the product options array
+        const sizeIndex = product.options.findIndex(opt => opt === 'Size');
+        // Get the size value for the selected variant
+        const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
+        // Update the displayed selected size text in the UI
+        const selectedSizeEl = document.querySelector('#selected-size');
+        if (selectedSizeEl) selectedSizeEl.textContent = sizeValue;
 
-          // Change selected size
-          const sizeIndex = product.options.findIndex(opt => opt === 'Size');
-          const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
-          document.querySelector('#selected-size').textContent = sizeValue;
+        // Update the price display elements
+        const saleEl = document.querySelector('.product__data-prices-sale');
+        const compareEl = document.querySelector('.product__data-prices-compare');
+        const regularEl = document.querySelector('.product__data-prices-regular');
 
-          // Change prices
-          const saleEl = document.querySelector('.product__data-prices-sale');
-          const compareEl = document.querySelector('.product__data-prices-compare');
-          const regularEl = document.querySelector('.product__data-prices-regular');
-
+        if (saleEl && compareEl && regularEl) {
+          // Format prices using Shopify.formatMoney
           const formattedPrice = Shopify.formatMoney(matchedVariant.price);
           const formattedCompare = Shopify.formatMoney(matchedVariant.compare_at_price);
 
@@ -215,20 +221,31 @@
           compareEl.textContent = formattedCompare;
           regularEl.textContent = formattedPrice;
 
-          const hasDiscount =
-          matchedVariant.compare_at_price &&
-          matchedVariant.compare_at_price > matchedVariant.price;
+          // Check if there is a discount to toggle price visibility
+          const hasDiscount = matchedVariant.compare_at_price && matchedVariant.compare_at_price > matchedVariant.price;
 
           saleEl.classList.toggle('hidden', !hasDiscount);
           compareEl.classList.toggle('hidden', !hasDiscount);
           regularEl.classList.toggle('hidden', hasDiscount);
+        }
 
-          // Change URL to matched variant
-          let url = new URLParse(window.location.href, true)
-          url.query.variant = matchedVariant.id;
+        // Update the URL query parameter for the variant without page reload
+        try {
+          let url = new URL(window.location.href);
+          url.searchParams.set('variant', matchedVariant.id);
           window.history.replaceState(null, null, url.toString());
-        });
+        } catch (e) {
+          console.warn('Could not update URL:', e);
+        }
+
+        // Sync the hidden quantity input value with the displayed quantity
+        const quantityValue = document.querySelector('.product__purchase-quantity-value')?.textContent;
+        const quantityInput = document.querySelector('#product-quantity');
+        if (quantityValue && quantityInput) {
+          quantityInput.value = quantityValue;
+        }
       });
+    });
   });
 </script>
 
