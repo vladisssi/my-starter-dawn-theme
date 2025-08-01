@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "background_image": "shopify://shop_images/50e37a0b2ea0594a188cc7a0c2614da5b48f3e12.jpg",
         "title": "<h1>MAKE A GREAT FIRST IMPRESSION</h1>",
         "title_color": "#f1f1f1",
         "title_size_desktop": 48,
