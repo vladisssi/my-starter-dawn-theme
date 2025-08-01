@@ -255,6 +255,11 @@
   width: 16px;
   font-size: 21px;
   cursor: pointer;
+  margin: 5px;
+}
+
+.product__purchase-quantity-button.inactive {
+  opacity: 0.5;
 }
 
 .product__purchase-quantity-value {

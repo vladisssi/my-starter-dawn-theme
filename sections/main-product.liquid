@@ -38,9 +38,15 @@
   </div>
 
   <div class="product-gallery">
+    {% if product.selected_or_first_available_variant.featured_image %}
+      {% assign featured = product.selected_or_first_available_variant.featured_image %}
+    {% else %}
+      {% assign featured = product.featured_image %}
+    {% endif %}
+
     <ul class="product-gallery__thumbnails">
       {% for image in product.images %}
-        <li class="product-gallery__thumbnail-item">
+        <li class="product-gallery__thumbnail-item {% if image == featured %} active {% endif %}">
           <img
             src="{{ image | img_url: '96x122' }}"
             alt="Thumbnail {{ forloop.index }}"
@@ -55,7 +61,7 @@
     <div class="product-gallery__main">
       <img
         id="product-gallery__main-image"
-        src="{{ product.selected_or_first_available_variant.featured_image | img_url: '800x800' }}"
+        src="{{ featured | img_url: '800x800' }}"
         alt="Main image"
         class="product-gallery__image"
         width="auto"
@@ -73,15 +79,19 @@
 
         <div class="product__data-prices">
           {% assign variant = product.selected_or_first_available_variant %}
-          <span class="product__data-prices-sale">
-            {{ variant.price | money }}
-          </span>
-          <span class="product__data-prices-compare">
-            {{ variant.compare_at_price | money }}
-          </span>
-          <span class="product__data-prices-regular">
-            {{ variant.price | money }}
-          </span>
+
+          {% if variant.compare_at_price > variant.price %}
+            <span class="product__data-prices-sale">
+              {{ variant.price | money }}
+            </span>
+            <span class="product__data-prices-compare">
+              {{ variant.compare_at_price | money }}
+            </span>
+          {% else %}
+            <span class="product__data-prices-regular">
+              {{ variant.price | money }}
+            </span>
+          {% endif %}
         </div>
       </div>
 
@@ -229,6 +239,15 @@
           regularEl.classList.toggle('hidden', hasDiscount);
         }
 
+        // Change image
+        if (matchedVariant.featured_image) {
+          document.querySelector('#product-gallery__main-image').setAttribute('src', matchedVariant.featured_image.src)
+          // Delete all active thumbnails
+          document.querySelector('.product-gallery__thumbnail-item.active').classList.remove('active')
+          // Add active to corresponding thumbnail
+          document.querySelectorAll('.product-gallery__thumbnail-item')[matchedVariant.featured_image.position - 1].classList.add('active')
+        }
+
         // Update the URL query parameter for the variant without page reload
         try {
           let url = new URL(window.location.href);
@@ -246,6 +265,18 @@
         }
       });
     });
+
+    // Gallery
+    document.querySelectorAll('.product-gallery__thumbnail-item').forEach((thumbnail) => {
+      thumbnail.addEventListener('click', () => {
+        // Delete all active thumbnails
+        document.querySelector('.product-gallery__thumbnail-item.active').classList.remove('active')
+        // Add active to corresponding thumbnail
+        thumbnail.classList.add('active')
+        // swap images;
+        document.querySelector('#product-gallery__main-image').setAttribute('src', thumbnail.querySelector('img').getAttribute('src'))
+      })
+    })
   });
 </script>
 
@@ -255,3 +286,5 @@
   "settings": []
 }
 {% endschema %}
+
+{% comment %} HOW TO PRESERVE QUANTITY BETWEEN RENDERS {% endcomment %}
