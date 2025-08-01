@@ -79,19 +79,20 @@
 
         <div class="product__data-prices">
           {% assign variant = product.selected_or_first_available_variant %}
-
-          {% if variant.compare_at_price > variant.price %}
-            <span class="product__data-prices-sale">
-              {{ variant.price | money }}
-            </span>
-            <span class="product__data-prices-compare">
-              {{ variant.compare_at_price | money }}
-            </span>
-          {% else %}
-            <span class="product__data-prices-regular">
-              {{ variant.price | money }}
-            </span>
+          {% assign has_discount = false %}
+          {% if variant.compare_at_price and variant.compare_at_price > variant.price %}
+            {% assign has_discount = true %}
           {% endif %}
+
+          <span class="product__data-prices-sale {% unless has_discount %}hidden{% endunless %}">
+            {{ variant.price | money }}
+          </span>
+          <span class="product__data-prices-compare {% unless has_discount %}hidden{% endunless %}">
+            {{ variant.compare_at_price | money }}
+          </span>
+          <span class="product__data-prices-regular {% if has_discount %}hidden{% endif %}">
+            {{ variant.price | money }}
+          </span>
         </div>
       </div>
 
