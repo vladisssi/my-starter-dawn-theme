@@ -44,19 +44,22 @@
       {% assign featured = product.featured_image %}
     {% endif %}
 
-    <ul class="product-gallery__thumbnails">
-      {% for image in product.images %}
-        <li class="product-gallery__thumbnail-item {% if image == featured %} active {% endif %}">
-          <img
-            src="{{ image | img_url: '96x122' }}"
-            alt="Thumbnail {{ forloop.index }}"
-            class="product-gallery__thumbnail"
-            width="auto"
-            height="auto"
-          >
-        </li>
-      {% endfor %}
-    </ul>
+    {% comment %} Если не одна картинка {% endcomment %}
+    {% if product.images.size > 1 %}
+      <ul class="product-gallery__thumbnails">
+        {% for image in product.images %}
+          <li class="product-gallery__thumbnail-item {% if image == featured %} active {% endif %}">
+            <img
+              src="{{ image | img_url: '96x122' }}"
+              alt="Thumbnail {{ forloop.index }}"
+              class="product-gallery__thumbnail"
+              width="auto"
+              height="auto"
+            >
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <div class="product-gallery__main">
       <img
@@ -141,7 +144,15 @@
         <div class="product__purchase">
           <div class="product__purchase-quantity">
             {% render 'minus' %}
-            <span class="product__purchase-quantity-value">1</span>
+            <span
+              class="product__purchase-quantity-value"
+              role="spinbutton"
+              aria-valuemin="1"
+              aria-valuemax="999"
+              aria-valuenow="1"
+              aria-label="Product quantity"
+              >1</span
+            >
             {% render 'plus' %}
           </div>
 
@@ -194,6 +205,36 @@
       {% endif %}
     </div>
   </div>
+</div>
+
+<div class="product__recommendations">
+  <div class="product__recommendations-header">
+    <h3 class="product__recommendations-title">Recommended</h3>
+    <a class="product__recommendations-toggle" href="#">
+      <p class="product__recommendations-toggle-text">View All</p>
+      <button class="metafields__toggle">
+        <img
+          src="{{ 'arrow.svg' | asset_url }}"
+          alt="Toggle Button"
+          width="24"
+          height="24"
+          class="metafields__icon"
+          style="transform: rotate(180deg);"
+        >
+      </button>
+    </a>
+  </div>
+  {% render 'separator' %}
+
+  <div class="product__recommendations-list">
+    <article class="product__recommendations-item">CARD</article>
+    <article class="product__recommendations-item">CARD</article>
+    <article class="product__recommendations-item">CARD</article>
+    <article class="product__recommendations-item">CARD</article>
+    <article class="product__recommendations-item">CARD</article>
+  </div>
+
+  <progress></progress>
 </div>
 
 <script>
@@ -294,14 +335,28 @@
         document.querySelector('#product-gallery__main-image').setAttribute('src', thumbnail.querySelector('img').getAttribute('src'))
       })
     })
+
+
+    // Related Products
+    fetch(window.Shopify.routes.root + 'recommendations/products.json?product_id={{ product.id }}')
+    .then((response) => response.json())
+    .then(({ products }) => {
+      console.log(products);
+      
+      // if (products.length > 0) {
+      //   const firstRecommendedProduct = products[0];
+
+      //   alert(`The title of the first recommended product is: ${firstRecommendedProduct.title}`);
+      // }
+    });
   });
 </script>
 
 {% schema %}
 {
   "name": "Main Product",
+  "tag": "section",
+  "class": "section-pdp",
   "settings": []
 }
 {% endschema %}
-
-{% comment %} HOW TO PRESERVE QUANTITY BETWEEN RENDERS {% endcomment %}
