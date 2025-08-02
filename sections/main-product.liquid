@@ -208,104 +208,196 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Get the product object from the Liquid template (thats exactly why i cant push this script to separated file)
-    let product = {{ product | json }}
+  document.addEventListener('DOMContentLoaded', () => {
+        const sizeMapping = {
+      // Letter sizes
+      'XXS': 'Double Extra Small',
+      'XS': 'Extra Small',
+      'S': 'Small',
+      'M': 'Medium',
+      'L': 'Large',
+      'XL': 'Extra Large',
+      'XXL': 'Double Extra Large',
+      'XXXL': 'Triple Extra Large',
+      '4XL': 'Quadruple Extra Large',
+      '5XL': 'Quintuple Extra Large',
 
-    // Attach change event listeners to all size radio inputs
-    document.querySelectorAll('.product__size-input').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        // Get the selected variant ID from the checked radio
-        const selectedId = document.querySelector('.product__size-input:checked')?.value;
-        if (!selectedId) return; // Exit if nothing is selected
+      // US numeric sizes
+      '0': 'US 0 (Extra Small)',
+      '2': 'US 2 (Extra Small)',
+      '4': 'US 4 (Small)',
+      '6': 'US 6 (Small-Medium)',
+      '8': 'US 8 (Medium)',
+      '10': 'US 10 (Medium-Large)',
+      '12': 'US 12 (Large)',
+      '14': 'US 14 (Large-XL)',
+      '16': 'US 16 (XL)',
+      '18': 'US 18 (XXL)',
+      '20': 'US 20 (XXXL)',
 
-        // Find the matching variant object by ID
-        let matchedVariant = product.variants.find(variant => String(variant.id) === selectedId);
-        if (!matchedVariant) return; // Exit if variant not found
+      // EU sizes
+      'EU32': 'EU 32 (XXS)',
+      'EU34': 'EU 34 (XS)',
+      'EU36': 'EU 36 (S)',
+      'EU38': 'EU 38 (M)',
+      'EU40': 'EU 40 (M-L)',
+      'EU42': 'EU 42 (L)',
+      'EU44': 'EU 44 (XL)',
+      'EU46': 'EU 46 (XXL)',
+      'EU48': 'EU 48 (XXXL)',
 
-        // Update the hidden input with the selected variant ID for the form
-        const productIdInput = document.querySelector('#product-id');
-        if (productIdInput) productIdInput.value = matchedVariant.id;
+      // UK sizes
+      'UK4': 'UK 4 (XS)',
+      'UK6': 'UK 6 (S)',
+      'UK8': 'UK 8 (M)',
+      'UK10': 'UK 10 (M-L)',
+      'UK12': 'UK 12 (L)',
+      'UK14': 'UK 14 (XL)',
+      'UK16': 'UK 16 (XXL)',
 
-        // Find the index of the "Size" option in the product options array
-        const sizeIndex = product.options.findIndex(opt => opt === 'Size');
-        // Get the size value for the selected variant
-        const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
-        // Update the displayed selected size text in the UI
-        const selectedSizeEl = document.querySelector('#selected-size');
-        if (selectedSizeEl) selectedSizeEl.textContent = sizeValue;
+      // IT sizes
+      'IT38': 'IT 38 (XS)',
+      'IT40': 'IT 40 (S)',
+      'IT42': 'IT 42 (M)',
+      'IT44': 'IT 44 (L)',
+      'IT46': 'IT 46 (XL)',
+      'IT48': 'IT 48 (XXL)',
 
-        // Update the price display elements
-        const saleEl = document.querySelector('.product__data-prices-sale');
-        const compareEl = document.querySelector('.product__data-prices-compare');
-        const regularEl = document.querySelector('.product__data-prices-regular');
+      // Jeans sizes (waist inches)
+      'W24': 'Waist 24"',
+      'W26': 'Waist 26"',
+      'W28': 'Waist 28"',
+      'W30': 'Waist 30"',
+      'W32': 'Waist 32"',
+      'W34': 'Waist 34"',
+      'W36': 'Waist 36"',
+      'W38': 'Waist 38"',
+      'W40': 'Waist 40"',
 
-        if (saleEl && compareEl && regularEl) {
-          // Format prices using Shopify.formatMoney
-          const formattedPrice = Shopify.formatMoney(matchedVariant.price);
-          const formattedCompare = Shopify.formatMoney(matchedVariant.compare_at_price);
+      // Generic numeric (some brands use this)
+      '28': '28 (XS)',
+      '30': '30 (S)',
+      '32': '32 (M)',
+      '34': '34 (L)',
+      '36': '36 (XL)',
+      '38': '38 (XXL)',
+      '40': '40 (XXXL)'
+      };
+      // Get the product object from the Liquid template (thats exactly why i cant push this script to separated file)
+      let product = {{ product | json }}
 
-          saleEl.textContent = formattedPrice;
-          compareEl.textContent = formattedCompare;
-          regularEl.textContent = formattedPrice;
+      // Get name of the size on initial load
+      const selectedRadio = document.querySelector('.product__size-input:checked');
+      const selectedSizeEl = document.querySelector('#selected-size');
 
-          // Check if there is a discount to toggle price visibility
-          const hasDiscount = matchedVariant.compare_at_price && matchedVariant.compare_at_price > matchedVariant.price;
+      if (selectedRadio && selectedSizeEl) {
+        const selectedId = selectedRadio.value;
+        const matchedVariant = product.variants.find(variant => String(variant.id) === selectedId);
 
-          saleEl.classList.toggle('hidden', !hasDiscount);
-          compareEl.classList.toggle('hidden', !hasDiscount);
-          regularEl.classList.toggle('hidden', hasDiscount);
+      if (matchedVariant) {
+          const sizeIndex = product.options.findIndex(opt => opt === 'Size');
+          const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
+          const mappedSize = sizeMapping[sizeValue] || sizeValue;
+          selectedSizeEl.textContent = mappedSize;
         }
+      }
 
-        // Change image
-        if (matchedVariant.featured_image) {
-          document.querySelector('#product-gallery__main-image').setAttribute('src', matchedVariant.featured_image.src)
+      // Attach change event listeners to all size radio inputs
+      document.querySelectorAll('.product__size-input').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          // Get the selected variant ID from the checked radio
+          const selectedId = document.querySelector('.product__size-input:checked')?.value;
+          if (!selectedId) return; // Exit if nothing is selected
+
+          // Find the matching variant object by ID
+          let matchedVariant = product.variants.find(variant => String(variant.id) === selectedId);
+          if (!matchedVariant) return; // Exit if variant not found
+
+          // Update the hidden input with the selected variant ID for the form
+          const productIdInput = document.querySelector('#product-id');
+          if (productIdInput) productIdInput.value = matchedVariant.id;
+
+          // Find the index of the "Size" option in the product options array
+          const sizeIndex = product.options.findIndex(opt => opt === 'Size');
+          // Get the size value for the selected variant
+          const sizeValue = sizeIndex !== -1 ? matchedVariant.options[sizeIndex] : '';
+          // Update the displayed selected size text in the UI
+          const selectedSizeEl = document.querySelector('#selected-size');
+          if (selectedSizeEl) {
+            selectedSizeEl.textContent = sizeMapping[sizeValue] || sizeValue;
+          }
+
+          // Update the price display elements
+          const saleEl = document.querySelector('.product__data-prices-sale');
+          const compareEl = document.querySelector('.product__data-prices-compare');
+          const regularEl = document.querySelector('.product__data-prices-regular');
+
+          if (saleEl && compareEl && regularEl) {
+            // Format prices using Shopify.formatMoney
+            const formattedPrice = Shopify.formatMoney(matchedVariant.price);
+            const formattedCompare = Shopify.formatMoney(matchedVariant.compare_at_price);
+
+            saleEl.textContent = formattedPrice;
+            compareEl.textContent = formattedCompare;
+            regularEl.textContent = formattedPrice;
+
+            // Check if there is a discount to toggle price visibility
+            const hasDiscount = matchedVariant.compare_at_price && matchedVariant.compare_at_price > matchedVariant.price;
+
+            saleEl.classList.toggle('hidden', !hasDiscount);
+            compareEl.classList.toggle('hidden', !hasDiscount);
+            regularEl.classList.toggle('hidden', hasDiscount);
+          }
+
+          // Change image
+          if (matchedVariant.featured_image) {
+            document.querySelector('#product-gallery__main-image').setAttribute('src', matchedVariant.featured_image.src)
+            // Delete all active thumbnails
+            document.querySelector('.product-gallery__thumbnail-item.active').classList.remove('active')
+            // Add active to corresponding thumbnail
+            document.querySelectorAll('.product-gallery__thumbnail-item')[matchedVariant.featured_image.position - 1].classList.add('active')
+          }
+
+          // Update button to selected variant availability
+          const button = document.querySelector('.product__purchase-button');
+          if (matchedVariant.available) {
+            button.textContent = 'Add to Cart';
+            button.disabled = false;
+          } else {
+            button.textContent = 'Out of Stock';
+            button.disabled = true;
+          }
+
+          // Update the URL query parameter for the variant without page reload
+          try {
+            let url = new URL(window.location.href);
+            url.searchParams.set('variant', matchedVariant.id);
+            window.history.replaceState(null, null, url.toString());
+          } catch (e) {
+            console.warn('Could not update URL:', e);
+          }
+
+          // Sync the hidden quantity input value with the displayed quantity
+          const quantityValue = document.querySelector('.product__purchase-quantity-value')?.textContent;
+          const quantityInput = document.querySelector('#product-quantity');
+          if (quantityValue && quantityInput) {
+            quantityInput.value = quantityValue;
+          }
+        });
+      });
+
+      // Gallery
+      document.querySelectorAll('.product-gallery__thumbnail-item').forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => {
           // Delete all active thumbnails
           document.querySelector('.product-gallery__thumbnail-item.active').classList.remove('active')
           // Add active to corresponding thumbnail
-          document.querySelectorAll('.product-gallery__thumbnail-item')[matchedVariant.featured_image.position - 1].classList.add('active')
-        }
-
-        // Update button to selected variant availability
-        const button = document.querySelector('.product__purchase-button');
-        if (matchedVariant.available) {
-          button.textContent = 'Add to Cart';
-          button.disabled = false;
-        } else {
-          button.textContent = 'Out of Stock';
-          button.disabled = true;
-        }
-
-        // Update the URL query parameter for the variant without page reload
-        try {
-          let url = new URL(window.location.href);
-          url.searchParams.set('variant', matchedVariant.id);
-          window.history.replaceState(null, null, url.toString());
-        } catch (e) {
-          console.warn('Could not update URL:', e);
-        }
-
-        // Sync the hidden quantity input value with the displayed quantity
-        const quantityValue = document.querySelector('.product__purchase-quantity-value')?.textContent;
-        const quantityInput = document.querySelector('#product-quantity');
-        if (quantityValue && quantityInput) {
-          quantityInput.value = quantityValue;
-        }
-      });
-    });
-
-    // Gallery
-    document.querySelectorAll('.product-gallery__thumbnail-item').forEach((thumbnail) => {
-      thumbnail.addEventListener('click', () => {
-        // Delete all active thumbnails
-        document.querySelector('.product-gallery__thumbnail-item.active').classList.remove('active')
-        // Add active to corresponding thumbnail
-        thumbnail.classList.add('active')
-        // swap images;
-        document.querySelector('#product-gallery__main-image').setAttribute('src', thumbnail.querySelector('img').getAttribute('src'))
+          thumbnail.classList.add('active')
+          // swap images;
+          document.querySelector('#product-gallery__main-image').setAttribute('src', thumbnail.querySelector('img').getAttribute('src'))
+        })
       })
-    })
-  });
+    });
 </script>
 
 {% schema %}

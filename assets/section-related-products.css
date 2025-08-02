@@ -168,16 +168,6 @@
 .product__recommendations-progress {
   width: 100%;
   height: 4px;
-  margin-top: 1rem;
   appearance: none;
-}
-
-.product__recommendations-progress::-webkit-progress-bar {
-  background-color: #eee;
-  border-radius: 2px;
-}
-
-.product__recommendations-progress::-webkit-progress-value {
-  background-color: #000; /* можно кастомизировать */
-  border-radius: 2px;
+  margin-top: 1rem;
 }

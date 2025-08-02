@@ -51,53 +51,55 @@
     </nav>
 
     <div class="header__logo">
-      <picture>
-        {% if section.settings.logo_mobile != blank %}
-          <source
-            media="(max-width: 499px)"
-            srcset="{{ section.settings.logo_mobile | img_url: 'master' }}"
-            width="121"
-            height="45"
-          >
-        {% else %}
-          <source
-            media="(max-width: 499px)"
-            srcset="{{ 'logo-black.svg' | asset_url }}"
-            width="121"
-            height="45"
-          >
-        {% endif %}
+      <a href="{{ routes.root_url }}" aria-label="Home">
+        <picture>
+          {% if section.settings.logo_mobile != blank %}
+            <source
+              media="(max-width: 499px)"
+              srcset="{{ section.settings.logo_mobile | img_url: 'master' }}"
+              width="121"
+              height="45"
+            >
+          {% else %}
+            <source
+              media="(max-width: 499px)"
+              srcset="{{ 'logo-black.svg' | asset_url }}"
+              width="121"
+              height="45"
+            >
+          {% endif %}
 
-        {% if section.settings.logo_desktop != blank %}
-          <source
-            media="(min-width: 500px)"
-            srcset="{{ section.settings.logo_desktop | img_url: 'master' }}"
-            width="264"
-            height="66"
-          >
-          <img
-            src="{{ section.settings.logo_desktop | img_url: 'master' }}"
-            alt="Brand Logo"
-            width="264"
-            height="66"
-          >
-        {% else %}
-          <source
-            media="(min-width: 500px)"
-            srcset="{{ 'logo-black.svg' | asset_url }}"
-            width="264"
-            height="66"
-          >
-          <img
-            src="{{ 'logo-black.svg' | asset_url }}"
-            alt="Brand Logo"
-            width="121"
-            height="45"
-            loading="eager"
-            fetchpriority="high"
-          >
-        {% endif %}
-      </picture>
+          {% if section.settings.logo_desktop != blank %}
+            <source
+              media="(min-width: 500px)"
+              srcset="{{ section.settings.logo_desktop | img_url: 'master' }}"
+              width="264"
+              height="66"
+            >
+            <img
+              src="{{ section.settings.logo_desktop | img_url: 'master' }}"
+              alt="Brand Logo"
+              width="264"
+              height="66"
+            >
+          {% else %}
+            <source
+              media="(min-width: 500px)"
+              srcset="{{ 'logo-black.svg' | asset_url }}"
+              width="264"
+              height="66"
+            >
+            <img
+              src="{{ 'logo-black.svg' | asset_url }}"
+              alt="Brand Logo"
+              width="121"
+              height="45"
+              loading="eager"
+              fetchpriority="high"
+            >
+          {% endif %}
+        </picture>
+      </a>
     </div>
 
     <div class="header__right">
