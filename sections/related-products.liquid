@@ -3,7 +3,7 @@
 <div class="product__recommendations">
   <div class="product__recommendations-header">
     <h3 class="product__recommendations-title">Recommended</h3>
-    <a class="product__recommendations-toggle" href="#">
+    <a class="product__recommendations-toggle" href="{{ product.collections.first.url }}">
       <p class="product__recommendations-toggle-text">View All</p>
       <button class="metafields__toggle">
         <img
@@ -19,15 +19,9 @@
   </div>
   {% render 'separator' %}
 
-  <div class="product__recommendations-list">
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-  </div>
+  <div class="product__recommendations-list"></div>
 
-  <progress></progress>
+  <progress class="product__recommendations-progress"></progress>
 </div>
 
 {% if cart.item_count > 0 %}
@@ -37,16 +31,56 @@
 {% endif %}
 
 <script>
+  const listContainer = document.querySelector('.product__recommendations-list');
+
+  function buildBlock(product) {
+    const hasDiscount = product.compare_at_price && product.compare_at_price > product.price;
+
+    return `
+    <article class="product-card">
+      <a href="${product.url}" class="product-card__link" aria-label="View ${product.title}">
+        <div class="product-card__image-wrapper">
+          ${product.tags.includes('badge') ? '<span class="product-card__badge">BESTSELLER</span>' : ''}
+          <img src="${product.featured_image}" class="product-card__image" alt="${product.title}" />
+        </div>
+        <div class="product-card__footer">
+          <div class="product-card__info">
+            <h4 class="product-card__title">${product.title}</h4>
+            <h4 class="product-card__price">
+              ${
+                hasDiscount
+                  ? `<span class="product-card__price-sale">${Shopify.formatMoney(product.price)}</span>
+                  <span class="product-card__price-compare">${Shopify.formatMoney(product.compare_at_price)}</span>`
+                  : `<span class="product-card__price">${Shopify.formatMoney(product.price)}</span>`
+              }
+            </h4>
+          </div>
+
+          <svg
+        class="product-card__icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="28"
+        height="28"
+        viewBox="0 0 28 28"
+        fill="none"
+      >
+        <rect width="28" height="28" rx="6" fill="#212322"/>
+        <path d="M19.1042 10.5H8.89548..." stroke="#FAFAF8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11.5 10.5V10C11.5..." stroke="#FAFAF8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+        </div>
+      </a>
+    </article>
+  `;
+  }
+
   fetch(window.Shopify.routes.root + 'recommendations/products.json?product_id={{ related_id }}')
     .then((response) => response.json())
     .then(({ products }) => {
-      console.log(products);
-
-      // if (products.length > 0) {
-      //   const firstRecommendedProduct = products[0];
-
-      //   alert(`The title of the first recommended product is: ${firstRecommendedProduct.title}`);
-      // }
+      products.forEach((product) => {
+        const html = buildBlock(product);
+        document.querySelector('.product__recommendations-list').innerHTML += html;
+      });
     });
 </script>
 

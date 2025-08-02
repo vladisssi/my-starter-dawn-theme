@@ -207,36 +207,6 @@
   </div>
 </div>
 
-<div class="product__recommendations">
-  <div class="product__recommendations-header">
-    <h3 class="product__recommendations-title">Recommended</h3>
-    <a class="product__recommendations-toggle" href="#">
-      <p class="product__recommendations-toggle-text">View All</p>
-      <button class="metafields__toggle">
-        <img
-          src="{{ 'arrow.svg' | asset_url }}"
-          alt="Toggle Button"
-          width="24"
-          height="24"
-          class="metafields__icon"
-          style="transform: rotate(180deg);"
-        >
-      </button>
-    </a>
-  </div>
-  {% render 'separator' %}
-
-  <div class="product__recommendations-list">
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-    <article class="product__recommendations-item">CARD</article>
-  </div>
-
-  <progress></progress>
-</div>
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
     // Get the product object from the Liquid template (thats exactly why i cant push this script to separated file)
@@ -335,20 +305,6 @@
         document.querySelector('#product-gallery__main-image').setAttribute('src', thumbnail.querySelector('img').getAttribute('src'))
       })
     })
-
-
-    // Related Products
-    fetch(window.Shopify.routes.root + 'recommendations/products.json?product_id={{ product.id }}')
-    .then((response) => response.json())
-    .then(({ products }) => {
-      console.log(products);
-      
-      // if (products.length > 0) {
-      //   const firstRecommendedProduct = products[0];
-
-      //   alert(`The title of the first recommended product is: ${firstRecommendedProduct.title}`);
-      // }
-    });
   });
 </script>
 
