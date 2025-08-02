@@ -38,11 +38,14 @@
   text-transform: capitalize;
 }
 
+.metafields__toggle {
+  cursor: pointer;
+}
+
 .product__recommendations-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .product__recommendations-toggle-text {

@@ -94,10 +94,23 @@
     });
 </script>
 
+<style>
+  .product__recommendations {
+    background-color: {{ section.settings.background_color }};
+  }
+</style>
+
 {% schema %}
 {
   "name": "Related Products",
-  "settings": [],
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ],
   "presets": [
     {
       "name": "Related Products"
