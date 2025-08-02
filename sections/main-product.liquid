@@ -6,7 +6,13 @@
       <div class="product__slider">
         {% for image in product.images %}
           <div class="product__slider-slide {% if forloop.first %}active{% endif %}">
-            <img src="{{ image | image_url: master }}" alt="{{ image.alt | escape }}" width="auto" height="auto">
+            <img
+              class="product__slider-image"
+              src="{{ image | image_url: master }}"
+              alt="{{ image.alt | escape }}"
+              width="auto"
+              height="auto"
+            >
           </div>
         {% endfor %}
 
@@ -400,11 +406,24 @@
     });
 </script>
 
+<style>
+  .section-pdp {
+    background-color: {{ section.settings.background_color }};
+  }
+</style>
+
 {% schema %}
 {
   "name": "Main Product",
   "tag": "section",
   "class": "section-pdp",
-  "settings": []
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ]
 }
 {% endschema %}
