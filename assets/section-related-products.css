@@ -124,17 +124,25 @@
   align-items: center;
 }
 
+.product-card__add-to-cart {
+  flex-shrink: 0;
+  height: 28px;
+  width: 28px; 
+}
+
 .product-card__info {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+
 .product-card__title {
   font-weight: 400;
   font-style: Regular;
   font-size: 12px;
   line-height: 18px;
+  padding-right: 1px;
 }
 
 .product-card__price {
