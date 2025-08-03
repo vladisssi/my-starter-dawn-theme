@@ -1,11 +1,14 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 
-<article class="product-card">
+<article class="product-card {% unless product.available %} product-card--not-available {% endunless %}">
   <a href="{{ product.url }}" class="product-card__link" aria-label="View {{ product.title }}">
     <div class="product-card__image-wrapper">
       {% if product.tags contains 'badge' %}
-        <span class="product-card__badge">BESTSELLER</span>
+        <span class="product-card__badge-bestseller">BESTSELLER</span>
       {% endif %}
+      {% unless product.available %}
+        <span class="product-card__badge-sold">SOLD OUT</span>
+      {% endunless %}
       <img
         src="{{ product.featured_image.src | img_url: '600x' }}"
         class="product-card__image"

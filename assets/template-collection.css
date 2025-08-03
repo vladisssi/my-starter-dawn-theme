@@ -1,14 +1,128 @@
 .template-collection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   padding: 30px 15.5px;
+  
+
+  @media (min-width: 1000px) {
+    padding: 60px 56px;
+  }
+}
+
+
+.template-collection__filters-button {
+  padding: 15px 0;
+  width: 100%;
+  background-color: #212322;
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: 6px;
+
+  @media (min-width: 800px) {
+    display: none;
+  }
 }
 
 .template-collection__products {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
   
   @media (min-width: 1000px) {
-    grid-template-columns: repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
   }
+}
+
+.template-collection__filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.template-collection__filters-left {
+  display: flex;
+  gap: 8px;
+}
+
+.dropdown {
+  position: relative;
+  z-index: 999;
+}
+
+.dropdown__toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #E3E3E3;
+  background-color: #FAFAF8;
+}
+
+
+.dropdown__toggle-img {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease-in-out
+}
+
+.dropdown__toggle-img.active {
+  transform: rotate(-90deg);
+}
+
+.dropdown__content {
+  color: inherit;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  margin-top: 10px;
+  border-radius: 6px;
+  background-color: #FAFAF8;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none; 
+  width: 300px;
+}
+
+.dropdown__content.active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.dropdown-header__selected {
+  color: #605E5C;
+  font-family: Inter;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.dropdown-header__reset {
+  line-height: 18px;
+  cursor: pointer;
+  border-bottom: 1px solid #000000;
+}
+
+.dropdown__content-values {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 0 16px;
 }

@@ -4,7 +4,127 @@
 
 <div class="template-collection">
   <div class="template-collection__filters">
-    <button class="template-collection__filters-button">Filter and Sort By</button>
+    <button class="template-collection__filters-button" type="button">Filter and Sort By</button>
+
+    <div class="template-collection__filters-left">
+      {% if collection.filters.size > 0 %}
+        {% for filter in collection.filters %}
+          {% if filter.label == 'Availability'
+            or filter.label == 'Product type'
+            or filter.label == 'Size'
+            or filter.label == 'Color'
+          %}
+            <div class="dropdown">
+              <div class="dropdown__toggle">
+                <button type="button" class="dropdown__toggle-button">
+                  {{ filter.label }}
+                </button>
+                <img
+                  class="dropdown__toggle-img"
+                  src="{{ 'arrow.svg' | asset_url }}"
+                  alt="Toggle Button"
+                  width="16"
+                  height="16"
+                >
+              </div>
+
+              <div class="dropdown__content">
+                <form id="CollectionFiltersForm">
+                  <div class="dropdown-header">
+                    <div class="dropdown-header__selected">{{ filter.active_values.size }} selected</div>
+                    <button class="dropdown-header__reset" type="reset" onclick="resetDropdown(event)">Reset</button>
+                  </div>
+
+                  <div class="dropdown__content-values">
+                    {% for value in filter.values %}
+                      <label class="dropdown__content-option">
+                        <input
+                          type="checkbox"
+                          name="{{ filter.param_name }}"
+                          value="{{ value.value }}"
+                          {% if value.active %}
+                            checked
+                          {% endif %}
+                          {% if value.count == 0 and value.active == false %}
+                            disabled
+                          {% endif %}
+                          onchange="this.form.submit()"
+                        >
+                        {{ value.label }} ({{ value.count }})
+                      </label>
+                    {% endfor %}
+                  </div>
+                </form>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="template-collection__filters-right">
+      {% comment %}
+        {% if collection.filters.size > 0 %}
+          {% for filter in collection.filters %}
+            {% if filter.type == 'price_range' %}
+              <div class="dropdown">
+                <div class="dropdown__toggle">
+                  <button type="button" class="dropdown__toggle-button">
+                    {{ filter.label }}
+                  </button>
+                  <img
+                    class="dropdown__toggle-img"
+                    src="{{ 'arrow.svg' | asset_url }}"
+                    alt="Toggle Button"
+                    width="16"
+                    height="16"
+                  >
+                </div>
+
+                <div class="dropdown__content">
+                  <form id="CollectionFiltersForm">
+                    <div class="dropdown-header">
+                      <div class="dropdown-header__selected">
+                        {% if filter.min_value.value or filter.max_value.value %}
+                          Custom range
+                        {% else %}
+                          No price selected
+                        {% endif %}
+                      </div>
+                      <button class="dropdown-header__reset" type="reset" onclick="resetDropdown(event)">Reset</button>
+                    </div>
+
+                    <div class="dropdown__content-values">
+                      <div class="dropdown__content-option">
+                        <label>
+                          From:
+                          <input
+                            type="number"
+                            name="{{ filter.min_value.param_name }}"
+                            value="{{ filter.min_value.value }}"
+                          >
+                        </label>
+                      </div>
+                      <div class="dropdown__content-option">
+                        <label>
+                          To:
+                          <input
+                            type="number"
+                            name="{{ filter.max_value.param_name }}"
+                            value="{{ filter.max_value.value }}"
+                          >
+                        </label>
+                      </div>
+                      <button type="submit">Apply</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endcomment %}
+    </div>
   </div>
   <div class="template-collection__products">
     {% for product in collection.products %}

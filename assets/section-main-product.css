@@ -386,3 +386,14 @@
   object-position: top;
 }
 
+.product__data-sold {
+  background: red;
+  color: #000000;
+  border-radius: 6px;
+  padding: 5px;
+  margin: 20px 0;
+  text-align: center;
+  text-decoration: uppercase;
+  font-weight: 700;
+}
+
