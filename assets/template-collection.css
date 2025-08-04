@@ -43,6 +43,10 @@
 .template-collection__filters-left {
   display: flex;
   gap: 8px;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
 }
 
 .dropdown {
