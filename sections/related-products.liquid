@@ -2,7 +2,7 @@
 
 <div class="product__recommendations">
   <div class="product__recommendations-header">
-    <h3 class="product__recommendations-title">Recommended</h3>
+    <h3 class="product__recommendations-title">{{ section.settings.title }}</h3>
     <a class="product__recommendations-toggle" href="{{ product.collections.first.url }}">
       <p class="product__recommendations-toggle-text">View All</p>
       <button class="metafields__toggle">
@@ -89,8 +89,16 @@
   fetch(window.Shopify.routes.root + 'recommendations/products.json?product_id={{ related_id }}')
     .then((response) => response.json())
     .then(({ products }) => {
+      if (products.length === 0) {
+        listContainer.innerHTML = '<p class="product__recommendations-empty">No related products found.</p>';
+        return;
+      }
       const htmlAll = products.map(buildBlock).join('');
       listContainer.innerHTML = htmlAll;
+    })
+    .catch((e) => {
+      listContainer.innerHTML = '<p class="product__recommendations-error">Failed to load related products.</p>';
+      console.error('Error loading recommendations:', e);
     });
 </script>
 
@@ -109,6 +117,12 @@
       "type": "color",
       "label": "Background Color",
       "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Recommended"
     }
   ],
   "presets": [

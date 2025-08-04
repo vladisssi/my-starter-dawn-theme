@@ -14,12 +14,21 @@
     "announcement_bar": {
       "type": "announcement-bar",
       "name": "Announcement Bar",
-      "settings": {}
+      "settings": {
+        "announcement_text": "FREE UNITED KINGDOM SHIPPING $200 +",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "font_size": 12
+      }
     },
     "header": {
       "type": "header",
       "name": "Header",
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "menu_links": "",
+        "nav-background_color": "#212322"
+      }
     }
   },
   "order": [

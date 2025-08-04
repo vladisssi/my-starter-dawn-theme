@@ -151,6 +151,16 @@
   .header {
     background-color: {{ section.settings.background_color }};
   }
+
+  .header__nav {
+    background-color: {{ section.settings.nav-background_color }};
+  }
+
+  .header__nav-link {
+    color: {{ section.settings.nav-text_color }};
+    border-bottom: 1px solid {{ section.settings.nav-border_color }};
+
+  }
 </style>
 
 {% schema %}
@@ -179,6 +189,24 @@
       "id": "logo_mobile",
       "label": "Mobile Logo",
       "info": "Upload a logo for mobile view"
+    },
+    {
+      "type": "color",
+      "id": "nav-background_color",
+      "label": "Navigation Background Color",
+      "default": "#212322"
+    },
+    {
+      "type": "color",
+      "id": "nav-text_color",
+      "label": "Navigation Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "nav-item-border-color",
+      "type": "color",
+      "label": "Navigation Item Border Color",
+      "default": "#000000"
     }
   ],
   "blocks": [

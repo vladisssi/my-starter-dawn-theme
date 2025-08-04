@@ -15,6 +15,20 @@
           <h3 class="contact-us__contact-label">{{ block.settings.label }}</h3>
           <p class="contact-us__contact-info">{{ block.settings.email }}</p>
         </div>
+
+        {% if block.settings.label2 and block.settings.email2 %}
+          <div class="contact-us__contact-text">
+            <h3 class="contact-us__contact-label">{{ block.settings.label2 }}</h3>
+            <p class="contact-us__contact-info">{{ block.settings.email2 }}</p>
+          </div>
+        {% endif %}
+
+        {% if block.settings.label3 and block.settings.email3 %}
+          <div class="contact-us__contact-text">
+            <h3 class="contact-us__contact-label">{{ block.settings.label3 }}</h3>
+            <p class="contact-us__contact-info">{{ block.settings.email3 }}</p>
+          </div>
+        {% endif %}
       </div>
     {% endif %}
 
@@ -132,6 +146,30 @@
           "id": "email",
           "label": "Email",
           "default": "contact@gopurepod.com"
+        },
+        {
+          "type": "text",
+          "id": "label2",
+          "label": "Second Label (optional)",
+          "default": "Wholesale inquiries:"
+        },
+        {
+          "type": "text",
+          "id": "email2",
+          "label": "Second Email (optional)",
+          "default": "wholesale@gopurepod.com"
+        },
+        {
+          "type": "text",
+          "id": "label3",
+          "label": "Third Label (optional)",
+          "default": "Press inquiries:"
+        },
+        {
+          "type": "text",
+          "id": "email3",
+          "label": "Third Email (optional)",
+          "default": "press@gopurepod.com"
         }
       ]
     },
@@ -152,6 +190,12 @@
           "default": "1234 Main Street, Los Angeles, CA 90001"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Information",
+      "category": "Contact"
     }
   ]
 }
