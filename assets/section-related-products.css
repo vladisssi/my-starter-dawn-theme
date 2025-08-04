@@ -1,5 +1,5 @@
-
 .product__recommendations {
+  margin: 0 auto;
   display: grid;
   padding: 30px 16px;
 

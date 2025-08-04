@@ -18,10 +18,16 @@
 
         <div class="slider__arrows">
           <button class="slider-arrow slider-arrow--prev" aria-label="Previous slide">
-            <img src="{{ 'arrow.svg' | asset_url }}" alt="" width="24" height="24">
+            <img src="{{ 'arrow.svg' | asset_url }}" alt="Slider Arrow Left" width="24" height="24">
           </button>
           <button class="slider-arrow slider-arrow--next" aria-label="Next slide">
-            <img src="{{ 'arrow.svg' | asset_url }}" alt="" width="24" height="24" style="transform: rotate(180deg)">
+            <img
+              src="{{ 'arrow.svg' | asset_url }}"
+              alt="Slider Arrow Right"
+              width="24"
+              height="24"
+              style="transform: rotate(180deg)"
+            >
           </button>
         </div>
 
@@ -85,6 +91,10 @@
         <h1 class="product__data-title">
           {{ product.title | escape }}
         </h1>
+
+        {% unless product.available %}
+          <div class="product__data-sold">Out of stock</div>
+        {% endunless %}
 
         <div class="product__data-prices">
           {% assign variant = product.selected_or_first_available_variant %}
